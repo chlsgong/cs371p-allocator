@@ -16,6 +16,10 @@
 #include <new>       // bad_alloc, new
 #include <stdexcept> // invalid_argument
 
+#include "gtest/gtest.h"
+
+using namespace std;
+
 // ---------
 // Allocator
 // ---------
@@ -69,8 +73,18 @@ class Allocator {
          * O(n) in time
          * <your documentation>
          */
+        FRIEND_TEST(TestAllocator2, valid);
         bool valid () const {
-            // <your code>
+            int i = 0;
+            while(i < sizeof(a)/sizeof(*a)){
+                int first = (*this)[i];
+                i += 4;
+                i += sizeof(T) * first;
+                int last = (*this)[i];
+                i += 4;
+                if(first == last)
+                    return false;
+            }
             return true;}
 
         /**
@@ -94,9 +108,12 @@ class Allocator {
          * throw a bad_alloc exception, if N is less than sizeof(T) + (2 * sizeof(int))
          */
         Allocator () {
-            (*this)[0] = 0; // replace!
-            // <your code>
+            // if(N < sizeof(T) + (2 * sizeof(int)))
+            //     throw bad_alloc("not enough space");
+            (*this)[0] = N - 8; 
+            (*this)[N - 5] = N - 8; 
             assert(valid());}
+
 
         // Default copy, destructor, and copy assignment
         // Allocator  (const Allocator&);
@@ -118,6 +135,31 @@ class Allocator {
         pointer allocate (size_type n) {
             // <your code>
             assert(valid());
+            int min = sizeof(T) + (2 * sizeof(int));
+            int size = sizeof(n);
+            // if(size < min){
+            //     throw bad_alloc;
+            // }
+            int i = 0;
+            pointer ptr;
+            while(i < sizeof(a)/sizeof(*a)){
+                int first = (*this)[i];
+                if(first >= size){
+                    // if(first - size < min && first - size != 0)
+                    //     throw bad_alloc;
+                    (*this)[i] = -1 * size;
+                    (*this)[i + size - 4] = -1 * size;
+                    if(first - size != 0){
+                        (*this)[i + size] = first - size;
+                        (*this)[i + first - 4] = first - size;
+                    }
+                    ptr = (*this)[i];
+                    break;
+                }
+                i += 4;
+                i += sizeof(T) * first;
+                i += 4;
+            }
             return nullptr;}             // replace!
 
         // ---------
