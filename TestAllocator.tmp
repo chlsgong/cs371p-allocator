@@ -1,83 +1,43 @@
-==3493== Memcheck, a memory error detector
-==3493== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
-==3493== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
-==3493== Command: ./TestAllocator
-==3493== 
+==2207== Memcheck, a memory error detector
+==2207== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==2207== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==2207== Command: ./TestAllocator
+==2207== 
 Running main() from gtest_main.cc
-[==========] Running 3 tests from 1 test case.
+[==========] Running 4 tests from 1 test case.
 [----------] Global test environment set-up.
-[----------] 3 tests from TestAllocator2
+[----------] 4 tests from TestAllocator2
 [ RUN      ] TestAllocator2.const_index
-==3493== Conditional jump or move depends on uninitialised value(s)
-==3493==    at 0x4033A1: Allocator<int, 100ul>::valid() const (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x4031F3: Allocator<int, 100ul>::Allocator() (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x401EAD: TestAllocator2_const_index_Test::TestBody() (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x4E70A22: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (gtest.cc:2078)
-==3493==    by 0x4E62BB6: testing::Test::Run() (gtest.cc:2151)
-==3493==    by 0x4E62C5D: testing::TestInfo::Run() (gtest.cc:2326)
-==3493==    by 0x4E62D64: testing::TestCase::Run() (gtest.cc:2444)
-==3493==    by 0x4E63017: testing::internal::UnitTestImpl::RunAllTests() (gtest.cc:4315)
-==3493==    by 0x4E632C3: testing::UnitTest::Run() (gtest.cc:2078)
-==3493==    by 0x50858C1: main (gtest.h:2288)
-==3493== 
-[       OK ] TestAllocator2.const_index (9 ms)
+[       OK ] TestAllocator2.const_index (10 ms)
 [ RUN      ] TestAllocator2.index
-==3493== Conditional jump or move depends on uninitialised value(s)
-==3493==    at 0x4033A1: Allocator<int, 100ul>::valid() const (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x4031F3: Allocator<int, 100ul>::Allocator() (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x4021D9: TestAllocator2_index_Test::TestBody() (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x4E70A22: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (gtest.cc:2078)
-==3493==    by 0x4E62BB6: testing::Test::Run() (gtest.cc:2151)
-==3493==    by 0x4E62C5D: testing::TestInfo::Run() (gtest.cc:2326)
-==3493==    by 0x4E62D64: testing::TestCase::Run() (gtest.cc:2444)
-==3493==    by 0x4E63017: testing::internal::UnitTestImpl::RunAllTests() (gtest.cc:4315)
-==3493==    by 0x4E632C3: testing::UnitTest::Run() (gtest.cc:2078)
-==3493==    by 0x50858C1: main (gtest.h:2288)
-==3493== 
 [       OK ] TestAllocator2.index (2 ms)
 [ RUN      ] TestAllocator2.valid
-==3493== Conditional jump or move depends on uninitialised value(s)
-==3493==    at 0x4033A1: Allocator<int, 100ul>::valid() const (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x4031F3: Allocator<int, 100ul>::Allocator() (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x402505: TestAllocator2_valid_Test::TestBody() (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x4E70A22: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (gtest.cc:2078)
-==3493==    by 0x4E62BB6: testing::Test::Run() (gtest.cc:2151)
-==3493==    by 0x4E62C5D: testing::TestInfo::Run() (gtest.cc:2326)
-==3493==    by 0x4E62D64: testing::TestCase::Run() (gtest.cc:2444)
-==3493==    by 0x4E63017: testing::internal::UnitTestImpl::RunAllTests() (gtest.cc:4315)
-==3493==    by 0x4E632C3: testing::UnitTest::Run() (gtest.cc:2078)
-==3493==    by 0x50858C1: main (gtest.h:2288)
-==3493== 
-==3493== Conditional jump or move depends on uninitialised value(s)
-==3493==    at 0x4033A1: Allocator<int, 100ul>::valid() const (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x40252A: TestAllocator2_valid_Test::TestBody() (in /home/charles/Documents/OOP-workspace/cs371p-allocator/TestAllocator)
-==3493==    by 0x4E70A22: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (gtest.cc:2078)
-==3493==    by 0x4E62BB6: testing::Test::Run() (gtest.cc:2151)
-==3493==    by 0x4E62C5D: testing::TestInfo::Run() (gtest.cc:2326)
-==3493==    by 0x4E62D64: testing::TestCase::Run() (gtest.cc:2444)
-==3493==    by 0x4E63017: testing::internal::UnitTestImpl::RunAllTests() (gtest.cc:4315)
-==3493==    by 0x4E632C3: testing::UnitTest::Run() (gtest.cc:2078)
-==3493==    by 0x50858C1: main (gtest.h:2288)
-==3493== 
 [       OK ] TestAllocator2.valid (2 ms)
-[----------] 3 tests from TestAllocator2 (20 ms total)
+[ RUN      ] TestAllocator2.allocate
+[       OK ] TestAllocator2.allocate (4 ms)
+[----------] 4 tests from TestAllocator2 (24 ms total)
 
 [----------] Global test environment tear-down
-[==========] 3 tests from 1 test case ran. (50 ms total)
-[  PASSED  ] 3 tests.
-==3493== 
-==3493== HEAP SUMMARY:
-==3493==     in use at exit: 0 bytes in 0 blocks
-==3493==   total heap usage: 249 allocs, 249 frees, 47,911 bytes allocated
-==3493== 
-==3493== All heap blocks were freed -- no leaks are possible
-==3493== 
-==3493== For counts of detected and suppressed errors, rerun with: -v
-==3493== Use --track-origins=yes to see where uninitialised values come from
-==3493== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)
+[==========] 4 tests from 1 test case ran. (52 ms total)
+[  PASSED  ] 4 tests.
+==2207== 
+==2207== HEAP SUMMARY:
+==2207==     in use at exit: 0 bytes in 0 blocks
+==2207==   total heap usage: 264 allocs, 264 frees, 49,447 bytes allocated
+==2207== 
+==2207== All heap blocks were freed -- no leaks are possible
+==2207== 
+==2207== For counts of detected and suppressed errors, rerun with: -v
+==2207== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+File 'Allocator.h'
+Lines executed:89.74% of 39
+Branches executed:100.00% of 14
+Taken at least once:57.14% of 14
+Calls executed:86.67% of 15
+Creating 'Allocator.h.gcov'
 File 'TestAllocator.c++'
-Lines executed:100.00% of 9
-Branches executed:58.62% of 58
-Taken at least once:29.31% of 58
-Calls executed:57.14% of 70
+Lines executed:100.00% of 15
+Branches executed:57.89% of 76
+Taken at least once:28.95% of 76
+Calls executed:56.99% of 93
 Creating 'TestAllocator.c++.gcov'

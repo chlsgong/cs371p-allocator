@@ -79,6 +79,6 @@ TestAllocator: Allocator.h TestAllocator.c++
 
 TestAllocator.tmp: TestAllocator
 	$(VALGRIND) ./TestAllocator                                   		>  TestAllocator.tmp 2>&1
-#	$(GCOV) -b Allocator.h     | grep -A 5 "File 'Allocator.h'"     	>> TestAllocator.tmp
+	$(GCOV) -b TestAllocator.c++ | grep -A 5 "File 'Allocator.h'"     	>> TestAllocator.tmp
 	$(GCOV) -b TestAllocator.c++ | grep -A 5 "File 'TestAllocator.c++'" >> TestAllocator.tmp
 	cat TestAllocator.tmp
