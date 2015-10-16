@@ -28,7 +28,7 @@
 
 //     typedef          A                  allocator_type;
 //     typedef typename A::value_type      value_type;
-//     typedef typename A::difference_type difference_type;
+//     typedef typename A::size_type       size_type;
 //     typedef typename A::pointer         pointer;};
 
 // typedef testing::Types<
@@ -43,11 +43,11 @@
 // TYPED_TEST(TestAllocator1, test_1) {
 //     typedef typename TestFixture::allocator_type  allocator_type;
 //     typedef typename TestFixture::value_type      value_type;
-//     typedef typename TestFixture::difference_type difference_type;
+//     typedef typename TestFixture::size_type       size_type;
 //     typedef typename TestFixture::pointer         pointer;
 
 //           allocator_type  x;
-//     const difference_type s = 1;
+//     const size_type       s = 1;
 //     const value_type      v = 2;
 //     const pointer         p = x.allocate(s);
     // if (p != nullptr) {
@@ -59,11 +59,11 @@
 // TYPED_TEST(TestAllocator1, test_10) {
 //     typedef typename TestFixture::allocator_type  allocator_type;
 //     typedef typename TestFixture::value_type      value_type;
-//     typedef typename TestFixture::difference_type difference_type;
+//     typedef typename TestFixture::size_type       size_type;
 //     typedef typename TestFixture::pointer         pointer;
 
 //           allocator_type  x;
-//     const difference_type s = 10;
+//     const size_type       s = 10;
 //     const value_type      v = 2;
 //     const pointer         b = x.allocate(s);
 //     if (b != nullptr) {
@@ -91,24 +91,23 @@
 
 TEST(TestAllocator2, const_index) {
     const Allocator<int, 100> x;
-    ASSERT_EQ(x[95], 92);}
+    ASSERT_EQ(x[0], 92);}
 
 TEST(TestAllocator2, index) {
     Allocator<int, 100> x;
-    ASSERT_EQ(x[0], 92);}
+    ASSERT_EQ(x[96], 92);}
 
 TEST(TestAllocator2, valid){
     Allocator<int, 100> x;
     ASSERT_EQ(x.valid(), true);}
 
-// TEST(TestAllocator2, allocate){
-//     Allocator<int, 100> x;
-//     int j = 10;
-//     //int i[10];
-//     //x.allocate(i);
-//     pointer p = x.allocate(j);
-//     cout << p << endl;
-// }
+TEST(TestAllocator2, allocate) {
+    Allocator<int, 100> x;
+    int* p = x.allocate(10);
+    int val_p = *p;
+    ASSERT_EQ(val_p, 44);
+}
+
 // --------------
 // TestAllocator3
 // --------------
@@ -121,7 +120,7 @@ TEST(TestAllocator2, valid){
 
 //     typedef          A                  allocator_type;
 //     typedef typename A::value_type      value_type;
-//     typedef typename A::difference_type difference_type;
+//     typedef typename A::size_type       size_type;
 //     typedef typename A::pointer         pointer;};
 
 // typedef testing::Types<
@@ -134,11 +133,11 @@ TEST(TestAllocator2, valid){
 // TYPED_TEST(TestAllocator3, test_1) {
 //     typedef typename TestFixture::allocator_type  allocator_type;
 //     typedef typename TestFixture::value_type      value_type;
-//     typedef typename TestFixture::difference_type difference_type;
+//     typedef typename TestFixture::size_type       size_type;
 //     typedef typename TestFixture::pointer         pointer;
 
 //           allocator_type  x;
-//     const difference_type s = 1;
+//     const size_type       s = 1;
 //     const value_type      v = 2;
 //     const pointer         p = x.allocate(s);
 //     if (p != nullptr) {
@@ -150,11 +149,11 @@ TEST(TestAllocator2, valid){
 // TYPED_TEST(TestAllocator3, test_10) {
 //     typedef typename TestFixture::allocator_type  allocator_type;
 //     typedef typename TestFixture::value_type      value_type;
-//     typedef typename TestFixture::difference_type difference_type;
+//     typedef typename TestFixture::size_type       size_type;
 //     typedef typename TestFixture::pointer         pointer;
 
 //           allocator_type  x;
-//     const difference_type s = 10;
+//     const size_type       s = 10;
 //     const value_type      v = 2;
 //     const pointer         b = x.allocate(s);
 //     if (b != nullptr) {
@@ -175,3 +174,5 @@ TEST(TestAllocator2, valid){
 //             --e;
 //             x.destroy(e);}
 //         x.deallocate(b, s);}}
+
+//  g++ -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -Wall TestAllocator.c++ -o TestAllocator -lgtest -lgtest_main -lpthread

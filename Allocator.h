@@ -79,11 +79,11 @@ class Allocator {
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
                 i += 4;
-                i += sizeof(T) * first;
+                i += first;
                 int last = (*this)[i];
-                i += 4;
-                if(first == last)
+                if(first != last)
                     return false;
+                i += 4;
             }
             return true;}
 
@@ -111,7 +111,7 @@ class Allocator {
             // if(N < sizeof(T) + (2 * sizeof(int)))
             //     throw bad_alloc("not enough space");
             (*this)[0] = N - 8; 
-            (*this)[N - 5] = N - 8; 
+            (*this)[N - 4] = N - 8;
             assert(valid());}
 
 
@@ -136,31 +136,28 @@ class Allocator {
             // <your code>
             assert(valid());
             int min = sizeof(T) + (2 * sizeof(int));
-            int size = sizeof(n);
-            // if(size < min){
-            //     throw bad_alloc;
-            // }
+            int size = n * sizeof(value_type);
             int i = 0;
-            pointer ptr;
+            pointer ptr = &((*this)[i]);
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
-                if(first >= size){
+                if(first >= min){
                     // if(first - size < min && first - size != 0)
                     //     throw bad_alloc;
                     (*this)[i] = -1 * size;
-                    (*this)[i + size - 4] = -1 * size;
+                    (*this)[i + size + 4] = -1 * size;
                     if(first - size != 0){
-                        (*this)[i + size] = first - size;
-                        (*this)[i + first - 4] = first - size;
+                        (*this)[i + size + 8] = first - size - 8;
+                        (*this)[i + first + 4] = first - size - 8;
                     }
-                    ptr = (*this)[i];
+                    ptr = &((*this)[i + size + 8]);
                     break;
                 }
                 i += 4;
-                i += sizeof(T) * first;
+                i += size;
                 i += 4;
             }
-            return nullptr;}             // replace!
+            return ptr;}
 
         // ---------
         // construct
