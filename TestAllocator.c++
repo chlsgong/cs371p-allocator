@@ -20,37 +20,36 @@
 // TestAllocator1
 // --------------
 
-template <typename A>
-struct TestAllocator1 : testing::Test {
-    // --------
-    // typedefs
-    // --------
+// template <typename A>
+// struct TestAllocator1 : testing::Test {
+//     // --------
+//     // typedefs
+//     // --------
 
-    typedef          A                  allocator_type;
-    typedef typename A::value_type      value_type;
-    typedef typename A::difference_type difference_type;
-    typedef typename A::pointer         pointer;};
+//     typedef          A                  allocator_type;
+//     typedef typename A::value_type      value_type;
+//     typedef typename A::difference_type difference_type;
+//     typedef typename A::pointer         pointer;};
 
-typedef testing::Types<
-            std::allocator<int>,
-            std::allocator<double>,
-            Allocator<int,    100>,
-            Allocator<double, 100> >
-        my_types_1;
+// typedef testing::Types<
+//             std::allocator<int>,
+//             std::allocator<double>,
+//             Allocator<int,    100>,
+//             Allocator<double, 100> >
+//         my_types_1;
 
-TYPED_TEST_CASE(TestAllocator1, my_types_1);
+// TYPED_TEST_CASE(TestAllocator1, my_types_1);
 
-TYPED_TEST(TestAllocator1, test_1) {
-    typedef typename TestFixture::allocator_type  allocator_type;
-    typedef typename TestFixture::value_type      value_type;
-    typedef typename TestFixture::difference_type difference_type;
-    typedef typename TestFixture::pointer         pointer;
+// TYPED_TEST(TestAllocator1, test_1) {
+//     typedef typename TestFixture::allocator_type  allocator_type;
+//     typedef typename TestFixture::value_type      value_type;
+//     typedef typename TestFixture::difference_type difference_type;
+//     typedef typename TestFixture::pointer         pointer;
 
-          allocator_type  x;
-    const difference_type s = 1;
-    const value_type      v = 2;
-    const pointer         p = x.allocate(s);
-    cout << p << endl;
+//           allocator_type  x;
+//     const difference_type s = 1;
+//     const value_type      v = 2;
+//     const pointer         p = x.allocate(s);
     // if (p != nullptr) {
     //     x.construct(p, v);
     //     ASSERT_EQ(v, *p);
