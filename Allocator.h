@@ -15,6 +15,7 @@
 #include <cstddef>   // ptrdiff_t, size_t
 #include <new>       // bad_alloc, new
 #include <stdexcept> // invalid_argument
+#include <cmath>
 
 #include "gtest/gtest.h"
 
@@ -79,7 +80,7 @@ class Allocator {
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
                 i += 4;
-                i += first;
+                i += abs(first);
                 int last = (*this)[i];
                 if(first != last)
                     return false;
@@ -108,8 +109,10 @@ class Allocator {
          * throw a bad_alloc exception, if N is less than sizeof(T) + (2 * sizeof(int))
          */
         Allocator () {
-            // if(N < sizeof(T) + (2 * sizeof(int)))
-            //     throw bad_alloc("not enough space");
+            if(N < sizeof(T) + (2 * sizeof(int))) {
+                bad_alloc x;
+                throw x;
+            }
             (*this)[0] = N - 8; 
             (*this)[N - 4] = N - 8;
             assert(valid());}
@@ -135,6 +138,8 @@ class Allocator {
         pointer allocate (size_type n) {
             // <your code>
             assert(valid());
+            if(n == 0)
+                return nullptr;
             int min = sizeof(T) + (2 * sizeof(int));
             int size = n * sizeof(value_type);
             int i = 0;
@@ -142,8 +147,10 @@ class Allocator {
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
                 if(first >= min){
-                    // if(first - size < min && first - size != 0)
-                    //     throw bad_alloc;
+                    if((size > first + 8 || first - size < min) && first - size != 0) {
+                        bad_alloc x;
+                        throw x;
+                    }
                     (*this)[i] = -1 * size;
                     (*this)[i + size + 4] = -1 * size;
                     if(first - size != 0){
@@ -154,7 +161,7 @@ class Allocator {
                     break;
                 }
                 i += 4;
-                i += size;
+                i += abs(first);
                 i += 4;
             }
             return ptr;}

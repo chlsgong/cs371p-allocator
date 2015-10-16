@@ -10,7 +10,9 @@
 
 #include <algorithm> // count
 #include <memory>    // allocator
-#include <iostream> 
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
 
 #include "gtest/gtest.h"
 
@@ -101,11 +103,17 @@ TEST(TestAllocator2, valid){
     Allocator<int, 100> x;
     ASSERT_EQ(x.valid(), true);}
 
-TEST(TestAllocator2, allocate) {
+TEST(TestAllocator2, allocate1) {
     Allocator<int, 100> x;
     int* p = x.allocate(10);
     int val_p = *p;
     ASSERT_EQ(val_p, 44);
+}
+
+TEST(TestAllocator2, allocate2) {
+    Allocator<int, 100> x;
+    ASSERT_NO_THROW(x.allocate(10));
+    ASSERT_THROW(x.allocate(20), bad_alloc);
 }
 
 // --------------
