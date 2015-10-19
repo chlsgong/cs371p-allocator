@@ -143,7 +143,7 @@ class Allocator {
             int min = sizeof(T) + (2 * sizeof(int));
             int size = n * sizeof(value_type);
             int i = 0;
-            pointer ptr = &((*this)[i]);
+            pointer ptr = &((*this)[i + 4]);
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
                 if(first >= min){
@@ -164,6 +164,7 @@ class Allocator {
                 i += abs(first);
                 i += 4;
             }
+            assert(valid());
             return ptr;}
 
         // ---------
@@ -189,8 +190,38 @@ class Allocator {
          * throw an invalid_argument exception, if p is invalid
          * <your documentation>
          */
-        void deallocate (pointer p, size_type) {
+        void deallocate (pointer p, size_type n) {
             // <your code>
+            assert(valid());
+            if(p != nullptr) {
+                if(*p < 4 || *p >= N-4) {
+                    invalid_argument x;
+                    throw x;
+                }
+                //int p_val = (*this)[*p];
+                int size = n * sizeof(value_type);
+                int start_sent = *p - 4;
+                int end_sent = *p + size;
+
+                (*this)[start_sent] = size;
+                (*this)[end_sent] = size;
+                
+                // coalesce adjacent free blocks
+                if(*p - 8 > 0 && (*this)[*p - 8] > 0) { // if free block in front of pointer
+                    prev_s = (*this)[*p - 8]; // previous block size
+                    start_sent = *p - prev_s - 12; // new start sentinal
+                    size = size + 8 + prev_s; // new size
+                    (*this)[start_sent] = size;
+                    (*this)[end_sent] = size;
+                }
+                if(*p + size + 4 < N && (*this)[*p + size + 4] > 0) {
+                    next_s = (*this)[*p + size + 4]; // next block size
+                    end_sent = *p + size + 8 + next_s; // new end sentinal
+                    size = size + 8 + next_s; // new size
+                    (*this)[start_sent] = size;
+                    (*this)[end_sent] = size;
+                }
+            }
             assert(valid());}
 
         // -------

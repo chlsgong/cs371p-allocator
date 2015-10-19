@@ -116,6 +116,14 @@ TEST(TestAllocator2, allocate2) {
     ASSERT_THROW(x.allocate(20), bad_alloc);
 }
 
+TEST(TestAllocator2, deallocate1) {
+    Allocator<int, 100> x;
+    int* p = x.allocate(10);
+    int val_p = *p;
+    s.deallocate(p, 10);
+    ASSERT_EQ(val_p, 44);
+}
+
 // --------------
 // TestAllocator3
 // --------------
