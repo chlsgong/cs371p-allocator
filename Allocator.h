@@ -136,14 +136,13 @@ class Allocator {
          * throw a bad_alloc exception, if n is invalid
          */
         pointer allocate (size_type n) {
-            // <your code>
             assert(valid());
             if(n == 0)
                 return nullptr;
             int min = sizeof(T) + (2 * sizeof(int));
             int size = n * sizeof(value_type);
             int i = 0;
-            pointer ptr = &((*this)[i + 4]);
+            pointer ptr = reinterpret_cast<const pointer>(&a[i + 4]);
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
                 if(first >= min){
@@ -157,7 +156,7 @@ class Allocator {
                         (*this)[i + size + 8] = first - size - 8;
                         (*this)[i + first + 4] = first - size - 8;
                     }
-                    ptr = &((*this)[i + size + 8]);
+                    ptr = reinterpret_cast<const pointer>(&a[i + 4]);
                     break;
                 }
                 i += 4;
@@ -191,35 +190,35 @@ class Allocator {
          * <your documentation>
          */
         void deallocate (pointer p, size_type n) {
-            // <your code>
             assert(valid());
             if(p != nullptr) {
-                if(*p < 4 || *p >= N-4) {
-                    invalid_argument x;
+                int size = n * sizeof(value_type);
+                int T_size = sizeof(T);
+
+                if(p < reinterpret_cast<const pointer>(&a[0]) || p >= reinterpret_cast<const pointer>(&a[N]) || -1 * size != *(p - 1)) {
+                    invalid_argument x("invalid pointer");
                     throw x;
                 }
-                //int p_val = (*this)[*p];
-                int size = n * sizeof(value_type);
-                int start_sent = *p - 4;
-                int end_sent = *p + size;
+                pointer start_sent = p - 1;
+                pointer end_sent = p + n;
 
-                (*this)[start_sent] = size;
-                (*this)[end_sent] = size;
+                *start_sent = size;
+                *end_sent = size;
                 
                 // coalesce adjacent free blocks
-                if(*p - 8 > 0 && (*this)[*p - 8] > 0) { // if free block in front of pointer
-                    prev_s = (*this)[*p - 8]; // previous block size
-                    start_sent = *p - prev_s - 12; // new start sentinal
+                if(p - 2 > reinterpret_cast<const pointer>(&a[0]) && *(p - 2) > 0) { // if free block in front of pointer
+                    int prev_s = *(p - 2); // previous block size
+                    start_sent = p - prev_s/T_size - 3; // new start sentinal
                     size = size + 8 + prev_s; // new size
-                    (*this)[start_sent] = size;
-                    (*this)[end_sent] = size;
+                    *start_sent = size;
+                    *end_sent = size;
                 }
-                if(*p + size + 4 < N && (*this)[*p + size + 4] > 0) {
-                    next_s = (*this)[*p + size + 4]; // next block size
-                    end_sent = *p + size + 8 + next_s; // new end sentinal
+                if(p + size/T_size + 1 < reinterpret_cast<const pointer>(&a[N]) && *(p + size/T_size + 1) > 0) {
+                    int next_s = *(p + size/T_size + 1); // next block size
+                    end_sent = p + size/T_size + 2 + next_s/T_size; // new end sentinal
                     size = size + 8 + next_s; // new size
-                    (*this)[start_sent] = size;
-                    (*this)[end_sent] = size;
+                    *start_sent = size;
+                    *end_sent = size;
                 }
             }
             assert(valid());}
