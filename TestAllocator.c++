@@ -36,7 +36,7 @@ struct TestAllocator1 : testing::Test {
 typedef testing::Types<
             std::allocator<int>,
             std::allocator<double>,
-            Allocator<int,    100>,
+            //Allocator<int,    100>,
             Allocator<double, 100> >
         my_types_1;
 

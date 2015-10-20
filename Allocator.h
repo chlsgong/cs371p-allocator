@@ -79,9 +79,11 @@ class Allocator {
             int i = 0;
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
+                cout << first << endl;
                 i += 4;
                 i += abs(first);
                 int last = (*this)[i];
+                cout << last << endl;
                 if(first != last)
                     return false;
                 i += 4;
@@ -142,7 +144,7 @@ class Allocator {
             int min = sizeof(T) + (2 * sizeof(int));
             int size = n * sizeof(value_type);
             int i = 0;
-            pointer ptr = reinterpret_cast<const pointer>(&a[i + 4]);
+            pointer ptr = reinterpret_cast<pointer>(&(*this)[i + 4]);
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
                 if(first >= min){
@@ -152,11 +154,14 @@ class Allocator {
                     }
                     (*this)[i] = -1 * size;
                     (*this)[i + size + 4] = -1 * size;
-                    if(first - size != 0){
+                    if(first - size != 0){ // if block does not exactly fit
                         (*this)[i + size + 8] = first - size - 8;
                         (*this)[i + first + 4] = first - size - 8;
                     }
-                    ptr = reinterpret_cast<const pointer>(&a[i + 4]);
+                    ptr = reinterpret_cast<pointer>(&(*this)[i + 4]);
+                    cout << *(&ptr - 4) << ": " << *reinterpret_cast<const int*>(*(&ptr - 4)) << endl;
+                    cout << &ptr << endl;
+                    cout << &(*this)[i] << ": " << (*this)[i] << endl;
                     break;
                 }
                 i += 4;
@@ -191,32 +196,36 @@ class Allocator {
          */
         void deallocate (pointer p, size_type n) {
             assert(valid());
+            //cout << *(reinterpret_cast<int*>(p) - 1) << endl;
             if(p != nullptr) {
                 int size = n * sizeof(value_type);
                 int T_size = sizeof(T);
 
-                if(p < reinterpret_cast<const pointer>(&a[0]) || p >= reinterpret_cast<const pointer>(&a[N]) || -1 * size != *(p - 1)) {
+                if(p < reinterpret_cast<const pointer>(&(*this)[0]) || p >= reinterpret_cast<const pointer>(&(*this)[N]) || size != *(reinterpret_cast<int*>(p) - 1) * -1) {
                     invalid_argument x("invalid pointer");
                     throw x;
                 }
-                pointer start_sent = p - 1;
-                pointer end_sent = p + n;
+                int* start_sent = reinterpret_cast<int*>(p) - 1;
+                int* end_sent = reinterpret_cast<int*>(p + n);
+                cout << start_sent << " " << end_sent << endl;
 
                 *start_sent = size;
                 *end_sent = size;
                 
                 // coalesce adjacent free blocks
-                if(p - 2 > reinterpret_cast<const pointer>(&a[0]) && *(p - 2) > 0) { // if free block in front of pointer
-                    int prev_s = *(p - 2); // previous block size
-                    start_sent = p - prev_s/T_size - 3; // new start sentinal
+                if(reinterpret_cast<int*>(p) - 2 > reinterpret_cast<const int*>(&(*this)[0]) && *(reinterpret_cast<int*>(p) - 2) > 0) { // if free block in front of pointer
+                    int prev_s = *(reinterpret_cast<int*>(p) - 2); // previous block size
+                    start_sent = reinterpret_cast<int*>(p - prev_s/T_size) - 3; // new start sentinal
                     size = size + 8 + prev_s; // new size
                     *start_sent = size;
                     *end_sent = size;
                 }
-                if(p + size/T_size + 1 < reinterpret_cast<const pointer>(&a[N]) && *(p + size/T_size + 1) > 0) {
-                    int next_s = *(p + size/T_size + 1); // next block size
-                    end_sent = p + size/T_size + 2 + next_s/T_size; // new end sentinal
+                if(reinterpret_cast<int*>(p + size/T_size) + 1 < reinterpret_cast<const int*>(&(*this)[N]) && *(reinterpret_cast<int*>(p + size/T_size) + 1) > 0) {
+                    int next_s = *(reinterpret_cast<int*>(p + size/T_size) + 1); // next block size
+                    end_sent = reinterpret_cast<int*>(p + size/T_size + next_s/T_size) + 2; // new end sentinal
+                    cout << start_sent << " " << end_sent << endl;
                     size = size + 8 + next_s; // new size
+                    cout << "size: " << size << endl;
                     *start_sent = size;
                     *end_sent = size;
                 }
