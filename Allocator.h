@@ -74,18 +74,23 @@ class Allocator {
          * O(n) in time
          * <your documentation>
          */
-        FRIEND_TEST(TestAllocator2, valid);
+        FRIEND_TEST(TestAllocator2, valid_1);
+        FRIEND_TEST(TestAllocator2, valid_2);
+        FRIEND_TEST(TestAllocator2, valid_3);
+        FRIEND_TEST(TestAllocator2, valid_4);
+        FRIEND_TEST(TestAllocator2, valid_5);
+        FRIEND_TEST(TestAllocator2, valid_6);
         bool valid () const {
             int i = 0;
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
-               // cout << first << endl;
                 i += 4;
                 i += abs(first);
                 int last = (*this)[i];
-                //cout << last << endl;
-                if(first != last)
+                if(first != last){
+                    cout << "first: " << first << " last: " << last << endl;
                     return false;
+                }
                 i += 4;
             }
             return true;}
@@ -147,8 +152,8 @@ class Allocator {
             pointer ptr = reinterpret_cast<pointer>(&(*this)[i + 4]);
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
-                if(first >= min){
-                    if((size > first + 8 || first - size < min) && first - size != 0) {
+                if(first >= min - 8){
+                    if((size > first || first - size < min) && first - size != 0) {
                         bad_alloc x;
                         throw x;
                     }
@@ -159,10 +164,6 @@ class Allocator {
                         (*this)[i + first + 4] = first - size - 8;
                     }
                     ptr = reinterpret_cast<pointer>(&(*this)[i + 4]);
-                    // cout << *(&ptr - 4) << ": " << *reinterpret_cast<const int*>(*(&ptr - 4)) << endl;
-                    // cout << &ptr << endl;
-                    // cout << &(*this)[i] << ": " << (*this)[i] << endl;
-                    break;
                 }
                 i += 4;
                 i += abs(first);
@@ -196,7 +197,6 @@ class Allocator {
          */
         void deallocate (pointer p, size_type n) {
             assert(valid());
-            //cout << *(reinterpret_cast<int*>(p) - 1) << endl;
             if(p != nullptr) {
                 int size = n * sizeof(value_type);
                 int T_size = sizeof(T);
@@ -210,22 +210,21 @@ class Allocator {
 
                 *start_sent = size;
                 *end_sent = size;
-                
+                int temp_size = size;
                 // coalesce adjacent free blocks
                 if(reinterpret_cast<int*>(p) - 2 > reinterpret_cast<const int*>(&(*this)[0]) && *(reinterpret_cast<int*>(p) - 2) > 0) { // if free block in front of pointer
                     int prev_s = *(reinterpret_cast<int*>(p) - 2); // previous block size
                     start_sent = reinterpret_cast<int*>(p - prev_s/T_size) - 3; // new start sentinal
-                    size = size + 8 + prev_s; // new size
-                    *start_sent = size;
-                    *end_sent = size;
+                    temp_size = temp_size + 8 + prev_s; // new size
+                    *start_sent = temp_size;
+                    *end_sent = temp_size;
                 }
                 if(reinterpret_cast<int*>(p + size/T_size) + 1 < reinterpret_cast<const int*>(&(*this)[N]) && *(reinterpret_cast<int*>(p + size/T_size) + 1) > 0) {
                     int next_s = *(reinterpret_cast<int*>(p + size/T_size) + 1); // next block size
                     end_sent = reinterpret_cast<int*>(reinterpret_cast<char*>(p + size/T_size) + next_s + 8); // new end sentinal
-                    //cout << start_sent << " " << end_sent << endl;
-                    size = size + 8 + next_s; // new size
-                    *start_sent = size;
-                    *end_sent = size;
+                    temp_size = temp_size + 8 + next_s; // new size
+                    *start_sent = temp_size;
+                    *end_sent = temp_size;
                 }
             }
             assert(valid());}
