@@ -36,8 +36,8 @@ struct TestAllocator1 : testing::Test {
 typedef testing::Types<
             std::allocator<int>,
             std::allocator<double>,
-            //Allocator<int,    100>,
-            Allocator<double, 100> >
+            Allocator<int,    100>,
+            Allocator<double, 500> >
         my_types_1;
 
 TYPED_TEST_CASE(TestAllocator1, my_types_1);
@@ -140,7 +140,7 @@ struct TestAllocator3 : testing::Test {
 
 typedef testing::Types<
             Allocator<int,    100>,
-            Allocator<double, 100> >
+            Allocator<double, 500> >
         my_types_2;
 
 TYPED_TEST_CASE(TestAllocator3, my_types_2);
@@ -190,4 +190,39 @@ TYPED_TEST(TestAllocator3, test_10) {
             x.destroy(e);}
         x.deallocate(b, s);}}
 
+// --------------
+// TestAllocator4
+// --------------
+
+// TEST(TestAllocator4, const_index) {
+//     const Allocator<int, 100> x;
+//     ASSERT_EQ(x[0], 92);}
+
+// TEST(TestAllocator4, index) {
+//     Allocator<int, 100> x;
+//     ASSERT_EQ(x[96], 92);}
+
+// TEST(TestAllocator4, valid){
+//     Allocator<int, 100> x;
+//     ASSERT_EQ(x.valid(), true);}
+
+// TEST(TestAllocator4, allocate1) {
+//     Allocator<int, 500> x;
+//     int* p = x.allocate(10);
+//     int* q = x.allocate(10);
+//     ASSERT_EQ(p + 12, q);
+// }
+
+// TEST(TestAllocator4, allocate2) {
+//     Allocator<int, 100> x;
+//     ASSERT_NO_THROW(x.allocate(10));
+//     ASSERT_THROW(x.allocate(20), bad_alloc);
+// }
+
+// TEST(TestAllocator4, deallocate1) {
+//     Allocator<int, 100> x;
+//     int* p = x.allocate(10);
+//     x.deallocate(p, 10);
+//     ASSERT_EQ(*(p - 1), 92);
+// }    
 //  g++ -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -Wall TestAllocator.c++ -o TestAllocator -lgtest -lgtest_main -lpthread

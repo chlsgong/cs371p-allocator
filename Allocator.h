@@ -79,11 +79,11 @@ class Allocator {
             int i = 0;
             while(i < sizeof(a)/sizeof(*a)){
                 int first = (*this)[i];
-                cout << first << endl;
+               // cout << first << endl;
                 i += 4;
                 i += abs(first);
                 int last = (*this)[i];
-                cout << last << endl;
+                //cout << last << endl;
                 if(first != last)
                     return false;
                 i += 4;
@@ -159,9 +159,9 @@ class Allocator {
                         (*this)[i + first + 4] = first - size - 8;
                     }
                     ptr = reinterpret_cast<pointer>(&(*this)[i + 4]);
-                    cout << *(&ptr - 4) << ": " << *reinterpret_cast<const int*>(*(&ptr - 4)) << endl;
-                    cout << &ptr << endl;
-                    cout << &(*this)[i] << ": " << (*this)[i] << endl;
+                    // cout << *(&ptr - 4) << ": " << *reinterpret_cast<const int*>(*(&ptr - 4)) << endl;
+                    // cout << &ptr << endl;
+                    // cout << &(*this)[i] << ": " << (*this)[i] << endl;
                     break;
                 }
                 i += 4;
@@ -207,7 +207,6 @@ class Allocator {
                 }
                 int* start_sent = reinterpret_cast<int*>(p) - 1;
                 int* end_sent = reinterpret_cast<int*>(p + n);
-                cout << start_sent << " " << end_sent << endl;
 
                 *start_sent = size;
                 *end_sent = size;
@@ -222,10 +221,9 @@ class Allocator {
                 }
                 if(reinterpret_cast<int*>(p + size/T_size) + 1 < reinterpret_cast<const int*>(&(*this)[N]) && *(reinterpret_cast<int*>(p + size/T_size) + 1) > 0) {
                     int next_s = *(reinterpret_cast<int*>(p + size/T_size) + 1); // next block size
-                    end_sent = reinterpret_cast<int*>(p + size/T_size + next_s/T_size) + 2; // new end sentinal
-                    cout << start_sent << " " << end_sent << endl;
+                    end_sent = reinterpret_cast<int*>(reinterpret_cast<char*>(p + size/T_size) + next_s + 8); // new end sentinal
+                    //cout << start_sent << " " << end_sent << endl;
                     size = size + 8 + next_s; // new size
-                    cout << "size: " << size << endl;
                     *start_sent = size;
                     *end_sent = size;
                 }
