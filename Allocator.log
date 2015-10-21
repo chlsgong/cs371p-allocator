@@ -1,0 +1,80 @@
+commit 9bc4a97f777dc700846dd316cff1f17b29d1fbc2
+Author: Matthew Kim <myk235@cs.utexas.edu>
+Date:   Wed Oct 21 18:09:15 2015 -0500
+
+    added unit tests and fixed bugs close #7
+
+commit 0516a2ca00b8c376a008fd6cc72c72275553ffde
+Author: Matthew Kim <myk235@cs.utexas.edu>
+Date:   Wed Oct 21 15:24:55 2015 -0500
+
+    made deallocate dynamic to value types close #9
+
+commit 69e1a5dd1eafdae6ffc92252f4e2a971ef618777
+Author: Haoyu Gong <hcgong@cs.utexas.edu>
+Date:   Tue Oct 20 16:24:27 2015 -0500
+
+    bug in coalescing
+
+commit f5f95f7aaf0af4bc6fdeab3906228a32d438893d
+Author: Matthew Kim <myk235@cs.utexas.edu>
+Date:   Mon Oct 19 16:33:49 2015 -0500
+
+    deallocate method written and tested
+
+commit 0711cc7f233c6a57497124b7f801fb63daa3aba2
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Mon Oct 19 14:58:01 2015 -0500
+
+    wrote deallocate (untested)
+
+commit 919081a4f865cf623cd76812f07005d260aa8624
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Fri Oct 16 15:52:27 2015 -0500
+
+    implemented exceptions close #2
+
+commit 587f8aff9b00c77deede796aded7f5c0d5d03c77
+Merge: 7c7f88e c8d290b
+Author: chlsgong <chlsgong@gmail.com>
+Date:   Fri Oct 16 14:15:40 2015 -0500
+
+    Merge pull request #3 from chlsgong/dev
+    
+    dev to master
+
+commit c8d290bccf491670ab457bae9435dc184dcb11fc
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Fri Oct 16 14:09:07 2015 -0500
+
+    fixed gcov on Allocator.h close #1
+
+commit c7b5c07c768d6c5f417267578b86bdf0b5dbdfff
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Fri Oct 16 01:06:37 2015 -0500
+
+    fixed valid and made allcoate work
+
+commit 87d251e6a8cb02f15031b737c609a37713ca1263
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Thu Oct 15 23:00:38 2015 -0500
+
+    edited travis file to make it build
+
+commit 620977396cb5dc9f7d528a99ad32f293c26d2227
+Author: Matthew Kim <myk235@cs.utexas.edu>
+Date:   Thu Oct 15 18:38:47 2015 -0500
+
+    started on allocate method
+
+commit 7c7f88e521ee38d11ebbc50600ee19d9e6a89285
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Tue Oct 13 13:26:08 2015 -0500
+
+    initial commit
+
+commit 04b31886ceb07780a1edbcf35f71139b326f0066
+Author: chlsgong <chlsgong@gmail.com>
+Date:   Tue Oct 13 13:20:48 2015 -0500
+
+    Initial commit

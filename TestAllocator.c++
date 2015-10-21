@@ -245,6 +245,11 @@ TEST(TestAllocator5, allocate_5) {
     Allocator<short, 100> x;
     ASSERT_NO_THROW(x.allocate(46));}
 
+TEST(TestAllocator5, allocate_6) {
+    Allocator<int, 100> x;
+    int* p = x.allocate(0);
+    ASSERT_EQ(p, nullptr);}
+
 TEST(TestAllocator6, deallocate_1) {
     Allocator<int, 100> x;
     int* p = x.allocate(10);
@@ -279,6 +284,12 @@ TEST(TestAllocator6, deallocate_4) {
     ASSERT_THROW(x.deallocate(p - 100, 10), invalid_argument);
     ASSERT_THROW(x.deallocate(p + 1000, 10), invalid_argument);
     ASSERT_THROW(x.deallocate(p, 20), invalid_argument);}
+
+TEST(TestAllocator6, deallocate_5) {
+    Allocator<int, 100> x;
+    int* p = x.allocate(0);
+    x.deallocate(p, 0);
+    ASSERT_EQ(p, nullptr);}
 
 TEST(TestAllocator2, const_index) {
     const Allocator<int, 100> x;

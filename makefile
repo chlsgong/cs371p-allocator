@@ -1,12 +1,10 @@
 FILES :=                              \
     .travis.yml                       \
-#    collatz-tests/EID-RunCollatz.in   \
-#    collatz-tests/EID-RunCollatz.out  \
-#    collatz-tests/EID-TestCollatz.c++ \
-#    collatz-tests/EID-TestCollatz.out \
+    allocator-tests/hcg359-TestAllocator.c++ \
+    allocator-tests/hcg359-TestAllocator.out \
     Allocator.h                         \
     Allocator.log                       \
-    html                             \
+    html                             	\
     TestAllocator.c++                   \
     TestAllocator.out
 

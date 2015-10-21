@@ -72,7 +72,8 @@ class Allocator {
         /**
          * O(1) in space
          * O(n) in time
-         * <your documentation>
+         * Checks the heap, makes sure sentinel values are accurate.
+         * Returns false if inaccurate, true if accurate
          */
         FRIEND_TEST(TestAllocator2, valid_1);
         FRIEND_TEST(TestAllocator2, valid_2);
@@ -98,7 +99,7 @@ class Allocator {
         /**
          * O(1) in space
          * O(1) in time
-         * <your documentation>
+         * Read/Write index access to the array from a pointer value
          * https://code.google.com/p/googletest/wiki/AdvancedGuide#Private_Class_Members
          */
         FRIEND_TEST(TestAllocator2, index);
@@ -141,6 +142,7 @@ class Allocator {
          * the smallest allowable block is sizeof(T) + (2 * sizeof(int))
          * choose the first block that fits
          * throw a bad_alloc exception, if n is invalid
+         * allocates space for n value-types
          */
         pointer allocate (size_type n) {
             assert(valid());
@@ -193,7 +195,8 @@ class Allocator {
          * O(1) in time
          * after deallocation adjacent free blocks must be coalesced
          * throw an invalid_argument exception, if p is invalid
-         * <your documentation>
+         * deallocates memory at pointer p for n value-types
+         * coalesces the block with other adjacent blocks if they are free
          */
         void deallocate (pointer p, size_type n) {
             assert(valid());
@@ -244,7 +247,7 @@ class Allocator {
         /**
          * O(1) in space
          * O(1) in time
-         * <your documentation>
+         * Read-only index access to array from pointer value
          */
         const int& operator [] (int i) const {
             return *reinterpret_cast<const int*>(&a[i]);}};
